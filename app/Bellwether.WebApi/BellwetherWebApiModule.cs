@@ -3,6 +3,7 @@ using Autofac;
 using Core.Domain;
 using Core.Infrastructure;
 using Core.Presentation;
+using Bellwether.Infrastructure;
 
 namespace Bellwether.WebApi
 {
@@ -13,6 +14,7 @@ namespace Bellwether.WebApi
             builder.RegisterModule<CoreInfrastructureModule>();
             builder.RegisterModule<CoreDomainModule>();
             builder.RegisterModule<CorePresentationModule>();
+            builder.RegisterModule<BellwetherInfrastructureModule>();
 
             builder.RegisterAssemblyTypes(ThisAssembly)
                    .AsImplementedInterfaces()
