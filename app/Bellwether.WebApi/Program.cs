@@ -18,10 +18,15 @@ namespace Bellwether.WebApi
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureServices(services => services.AddAutofac())
-                .UseStartup<Startup>()
-                .Build();
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            var environmentName = "";
+
+            return WebHost.CreateDefaultBuilder(args)
+                   .ConfigureServices(services => services.AddAutofac())
+                   .UseEnvironment(environmentName)
+                   .UseStartup<Startup>()
+                   .Build();
+        }
     }
 }
