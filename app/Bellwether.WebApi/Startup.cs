@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace Bellwether.WebApi
 {
@@ -31,14 +32,20 @@ namespace Bellwether.WebApi
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                options.Configuration = new OpenIdConnectConfiguration();
                 options.Authority = "http://localhost:5000/";
-                options.Audience = "resource-server";
+                options.Audience = "http://localhost:5000/";
                 options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
@@ -61,19 +68,6 @@ namespace Bellwether.WebApi
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials());
-
-            //var key = Encoding.ASCII.GetBytes(Configuration["Settings:Secret"]);
-            //app.UseJwtBearerAuthentication(new JwtBearerOptions
-            //{
-            //    AutomaticAuthenticate = true,
-            //    TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    }
-            //});
 
             app.UseAuthentication();
 
