@@ -1,79 +1,44 @@
-﻿using Bellwether.WebApi.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Bellwether.Domain.Users.Entities;
+using Bellwether.WebApi.Providers;
+using Core.Domain.Ddd;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bellwether.WebApi.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
-    public class AccountController : Controller
+  [Route("api/[controller]")]
+  public class AccountController : Controller
+  {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordProvider _passwordProvider;
+
+    public AccountController(IUnitOfWork unitOfWork, IPasswordProvider passwordProvider)
     {
-        private readonly IConfiguration _configuration;
-        private readonly IUserService _userService;
-
-        public AccountController(IConfiguration configuration, IUserService userService)
-        {
-            _configuration = configuration;
-            _userService = userService;
-        }
-
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]UserDto userDto)
-        {
-            var user = _userService.Authenticate(userDto.Username, userDto.Password);
-
-            if (user == null)
-                return Unauthorized();
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Settings:Secret"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            // return basic user info (without password) and token to store client side
-            return Ok(new
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Token = tokenString
-            });
-        }
-
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public IActionResult Register([FromBody]UserDto userDto)
-        {
-
-            try
-            {
-                // save 
-                var something = _userService.Create(userDto, userDto.Password);
-                return Ok();
-            }
-            catch (AppException ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(ex.Message);
-            }
-        }
+      _unitOfWork = unitOfWork;
+      _passwordProvider = passwordProvider;
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(JustTest model)
+    {
+      var repo = _unitOfWork.GetRepository<BellwetherUser>();
+      var salt = _passwordProvider.GenerateSalt();
+      var passwordHash = _passwordProvider.HashPassword(model.Password, salt);
+
+      var user = BellwetherUser.Create(Guid.NewGuid(), model.Name, model.Surname, model.Email, passwordHash, salt, null);
+      repo.Add(user);
+      await repo.SaveChangesAsync();
+      return Ok();
+    }
+
+    public class JustTest
+    {
+      public string Surname { get; set; }
+      public string Name { get; set; }
+      public string Password { get; set; }
+      public string Email { get; set; }
+    }
+  }
 }
