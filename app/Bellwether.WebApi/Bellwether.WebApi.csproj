@@ -20,5 +20,7 @@
     <ProjectReference Include="..\Core.Infrastructure\Core.Infrastructure.csproj" />
     <ProjectReference Include="..\Core.Presentation\Core.Presentation.csproj" />
     <ProjectReference Include="..\Bellwether.Infrastructure\Bellwether.Infrastructure.csproj" />
+    <ProjectReference Include="..\Bellwether.Application\Bellwether.Application.csproj" />
+    <ProjectReference Include="..\Bellwether.Application.Api\Bellwether.Application.Api.csproj" />
   </ItemGroup>
 </Project>

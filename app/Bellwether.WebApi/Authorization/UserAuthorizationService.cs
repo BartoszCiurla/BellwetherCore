@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Bellwether.Domain.Users.Entities;
-using Bellwether.WebApi.Providers;
 using Core.Presentation.Reader;
 using Core.Domain.Ddd;
 using Microsoft.EntityFrameworkCore;
+using Bellwether.Application.Providers.Password;
 
 namespace Bellwether.WebApi.Authorization
 {

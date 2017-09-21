@@ -5,6 +5,7 @@ using Core.Infrastructure;
 using Core.Presentation;
 using Bellwether.Infrastructure;
 using Bellwether.WebApi.Authorization;
+using Bellwether.Application;
 
 namespace Bellwether.WebApi
 {
@@ -16,6 +17,7 @@ namespace Bellwether.WebApi
       builder.RegisterModule<CoreDomainModule>();
       builder.RegisterModule<CorePresentationModule>();
       builder.RegisterModule<BellwetherInfrastructureModule>();
+      builder.RegisterModule<BellwetherApplicationModule>();
 
       builder.RegisterAssemblyTypes(ThisAssembly)
              .AsImplementedInterfaces()

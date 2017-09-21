@@ -57,8 +57,8 @@ namespace Bellwether.WebApi.Authorization
       {
         cookieOptions.Expires = _options.Expiration;
       }
-
-      context.Response.Cookies.Append(_options.TokenName, encodedJwt, cookieOptions);
+      await context.Response.WriteAsync(text: encodedJwt);//todo change it !
+      //context.Response.Cookies.Append(_options.TokenName, encodedJwt, cookieOptions);
     }
 
     private async Task GetJsonJwt(string encodedJwt, HttpContext context)
