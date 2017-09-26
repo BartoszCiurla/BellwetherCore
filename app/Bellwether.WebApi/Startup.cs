@@ -11,6 +11,9 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Bellwether.WebApi.Authorization;
 using System;
 using Microsoft.Extensions.Logging;
+using Core.Akka.ActorAutostart;
+using Akka.DI.AutoFac;
+using Core.Akka.ActorSystem;
 
 namespace Bellwether.WebApi
 {
@@ -76,7 +79,10 @@ namespace Bellwether.WebApi
       });
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    public void Configure(IApplicationBuilder app,
+                          IHostingEnvironment env,
+                          ILoggerFactory loggerFactory,
+                          IAutostartActorInitializer autostartActorInitializer)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -96,6 +102,8 @@ namespace Bellwether.WebApi
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bellwether api v1");
       });
+
+      autostartActorInitializer.FindAndStartActors();
     }
 
     public void ConfigureContainer(ContainerBuilder builder)

@@ -2,8 +2,9 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Bellwether.Application.Users;
 
-namespace Bellwether.Application.Providers.Password
+namespace Bellwether.Infrastructure.Password
 {
   public class PasswordProvider : IPasswordProvider
   {

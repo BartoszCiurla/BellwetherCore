@@ -10,7 +10,7 @@ using Bellwether.Domain.Users.Entities;
 using Core.Presentation.Reader;
 using Core.Domain.Ddd;
 using Microsoft.EntityFrameworkCore;
-using Bellwether.Application.Providers.Password;
+using Bellwether.Application.Users;
 
 namespace Bellwether.WebApi.Authorization
 {
