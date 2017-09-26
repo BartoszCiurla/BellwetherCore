@@ -1,18 +1,17 @@
-using System;
-using Core.Domain.Ddd;
-using Microsoft.Extensions.Logging;
+using Autofac;
+using Core.Akka.ActorSystem;
 
 namespace Bellwether.WebApi.Core
 {
-  public class ControllerBootstraper : IControllerBootstraper
+  public class ControllerBootstraper
   {
-    public ControllerBootstraper(Func<IUnitOfWork> uowFactory, ILogger logger)
-    {
-      UowFactory = uowFactory;
-      Logger = logger;
-    }
+    public IActorProvider ActorProvider { get; }
+    public ILifetimeScope Scope { get; }
 
-    public Func<IUnitOfWork> UowFactory { get; }
-    public ILogger Logger { get; }
+    public ControllerBootstraper(IActorProvider actorProvider, ILifetimeScope scope)
+    {
+      ActorProvider = actorProvider;
+      Scope = scope;
+    }
   }
 }

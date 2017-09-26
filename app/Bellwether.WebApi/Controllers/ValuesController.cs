@@ -10,9 +10,10 @@ namespace Bellwether.WebApi.Controllers
   [Route("api/[controller]")]
   public class ValuesController : BaseController
   {
-    public ValuesController(IActionExecutor actionExecutor) : base(actionExecutor)
+    public ValuesController(ControllerBootstraper controllerBootstraper) : base(controllerBootstraper)
     {
     }
+
     // GET api/values
     [HttpGet]
     public IEnumerable<string> Get()

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Bellwether.Application.Providers.Password
+namespace Bellwether.Application.Users
 {
   public interface IPasswordProvider
   {

@@ -1,6 +1,8 @@
+using Core.Application.Api.Messages;
+
 namespace Bellwether.Application.Api.Users
 {
-  public class RegisterUserCommand
+  public class RegisterUserCommand: Command
   {
     public string Surname { get; set; }
     public string Name { get; set; }

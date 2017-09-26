@@ -8,6 +8,9 @@ namespace Bellwether.Infrastructure
   {
     protected override void Load(ContainerBuilder builder)
     {
+      builder.RegisterAssemblyTypes(ThisAssembly)
+             .AsImplementedInterfaces()
+             .PreserveExistingDefaults();
       RegisterDatabaseAndRepositories(builder);
     }
 
