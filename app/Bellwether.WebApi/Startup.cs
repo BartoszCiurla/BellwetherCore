@@ -84,9 +84,6 @@ namespace Bellwether.WebApi
                           ILoggerFactory loggerFactory,
                           IAutostartActorInitializer autostartActorInitializer)
     {
-      loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-      loggerFactory.AddDebug();
-
       app.UseCors(x => x
          .AllowAnyOrigin()
          .AllowAnyMethod()

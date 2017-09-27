@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Akka.Actor;
+using Serilog;
+
 using Core.Application.Api.Messages.Responses;
 using Core.Application.Api.Messages;
 using Core.Domain.Ddd;
@@ -10,6 +12,7 @@ namespace Core.Application.Actors
   public class BaseActor : ReceiveActor
   {
     private readonly IActorBootstraper _actorBootstraper;
+    protected ILogger Logger => _actorBootstraper.Logger;
 
     public BaseActor(IActorBootstraper actorBootstraper)
     {
@@ -24,9 +27,11 @@ namespace Core.Application.Actors
         {
           await action(uow);
         }
+        Logger.ForContext<BaseActor>().Debug("Command {Command} successfuly handled.", command);
       }
       catch (Exception exception)
       {
+        Logger.ForContext<BaseActor>().Fatal(exception, "Error occured during handling command {Command}", command);
         Sender.Tell(new ErrorResponse("GENERAL ERROR"));
       }
     }
