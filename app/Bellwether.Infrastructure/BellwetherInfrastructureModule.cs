@@ -1,6 +1,10 @@
 using Autofac;
-using Bellwether.Infrastructure.Ef;
 using Microsoft.EntityFrameworkCore;
+using Serilog.AspNetCore;
+
+using Bellwether.Infrastructure.Ef;
+using Serilog;
+using System.IO;
 
 namespace Bellwether.Infrastructure
 {
@@ -11,7 +15,22 @@ namespace Bellwether.Infrastructure
       builder.RegisterAssemblyTypes(ThisAssembly)
              .AsImplementedInterfaces()
              .PreserveExistingDefaults();
+
       RegisterDatabaseAndRepositories(builder);
+
+      RegisterLogger(builder);
+    }
+
+    private static void RegisterLogger(ContainerBuilder builder)
+    {
+       builder.Register(ctx => new LoggerConfiguration()
+                                 .MinimumLevel.Debug()
+                                 .WriteTo.RollingFile(Path.Combine("Logs","Bellwether-{Date}.txt"))
+                                 .WriteTo.Trace()
+                                 .WriteTo.Console()
+                                 .CreateLogger())
+                   .As<ILogger>()
+                   .SingleInstance();
     }
 
     private static void RegisterDatabaseAndRepositories(ContainerBuilder builder)
