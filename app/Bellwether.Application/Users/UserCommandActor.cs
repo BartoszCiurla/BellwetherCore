@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using Core.Akka.ActorAutostart;
+using Core.Application.Actors;
+
 using Bellwether.Application.Api.Common;
 using Bellwether.Application.Api.Users;
 using Bellwether.Domain.Users.Entities;
-using Core.Akka.ActorAutostart;
-using Core.Application.Actors;
 
 namespace Bellwether.Application.Users
 {
