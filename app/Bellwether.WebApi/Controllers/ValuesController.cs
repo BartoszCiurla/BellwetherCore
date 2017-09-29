@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 using Bellwether.WebApi.Core;
+using System.Threading.Tasks;
+using Bellwether.Application.Api.Common;
+using Bellwether.Application.Api;
 
 namespace Bellwether.WebApi.Controllers
 {
@@ -16,9 +19,9 @@ namespace Bellwether.WebApi.Controllers
 
     // GET api/values
     [HttpGet]
-    public IEnumerable<string> Get()
+    public async Task<IActionResult> Get()
     {
-      return new string[] { "value1", "value2" };
+      return await SendQuery(DispatcherActorsNames.ValuesQueryActor, new GetValuesQuery());
     }
 
     // GET api/values/5

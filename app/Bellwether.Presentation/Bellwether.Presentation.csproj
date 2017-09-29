@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bellwether.Application\Bellwether.Application.csproj" />
+    <ProjectReference Include="..\Bellwether.Application.Api\Bellwether.Application.Api.csproj" />
+    <ProjectReference Include="..\Bellwether.Domain\Bellwether.Domain.csproj" />
+    <ProjectReference Include="..\Core.Akka\Core.Akka.csproj" />
+    <ProjectReference Include="..\Core.Presentation\Core.Presentation.csproj" />
+  </ItemGroup>
+</Project>

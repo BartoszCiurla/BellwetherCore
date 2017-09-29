@@ -10,6 +10,7 @@ using Bellwether.WebApi.Core;
 using Core.Akka;
 using Core.Akka.ActorSystem;
 using Core.Application;
+using Bellwether.Presentation;
 
 namespace Bellwether.WebApi
 {
@@ -21,6 +22,7 @@ namespace Bellwether.WebApi
       builder.RegisterModule<CoreApplicationModule>();
       builder.RegisterModule<CoreDomainModule>();
       builder.RegisterModule<CorePresentationModule>();
+      builder.RegisterModule<BellwetherPresentationModule>();
       builder.RegisterModule<BellwetherInfrastructureModule>();
       builder.RegisterModule<BellwetherApplicationModule>();
       builder.RegisterModule<CoreAkkaModule>();

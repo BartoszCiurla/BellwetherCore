@@ -1,17 +1,23 @@
+using Akka.Configuration;
 using Autofac;
 using Core.Akka.ActorSystem;
 
 namespace Core.Akka
 {
-    public class CoreAkkaModule : Module
+  public class CoreAkkaModule : Module
+  {
+    private readonly Config AkkaConfig = ConfigurationFactory.ParseString(@"
+                                                                        akka {
+                                                                            akka.suppress-json-serializer-warning = on
+                                                                        }
+                                                                        ");
+    protected override void Load(ContainerBuilder builder)
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                   .AsImplementedInterfaces()
-                   .PreserveExistingDefaults();
+      builder.RegisterAssemblyTypes(ThisAssembly)
+             .AsImplementedInterfaces()
+             .PreserveExistingDefaults();
 
-            builder.Register(ctx => new ActorSystemManager("ActorSystem")).AsImplementedInterfaces().SingleInstance();
-        }
+      builder.Register(ctx => new ActorSystemManager("ActorSystem", AkkaConfig)).AsImplementedInterfaces().SingleInstance();
     }
+  }
 }
