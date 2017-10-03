@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Bellwether.Application.Users
+namespace Bellwether.Domain.Users
 {
-  public interface IPasswordProvider
+  public interface IPasswordCryptoService
   {
     Task<bool> IsCorrectAsync(string password, string passwordHash, string salt);
     string GenerateSalt();
