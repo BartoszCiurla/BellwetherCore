@@ -11,6 +11,7 @@ using Core.Presentation.Reader;
 using Core.Domain.Ddd;
 using Microsoft.EntityFrameworkCore;
 using Bellwether.Application.Users;
+using Bellwether.Domain.Users;
 
 namespace Bellwether.WebApi.Authorization
 {
@@ -24,21 +25,18 @@ namespace Bellwether.WebApi.Authorization
   public class UserAuthorizationService : IUserAuthorizationService
   {
     private readonly IReadOnlyUnitOfWork _readOnlyUnitOfWork;
-    private readonly IPasswordProvider _passwordProvider;
+    private readonly IPasswordCryptoService _passwordCryptoService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<UserAuthorizationService> _logger;
 
     public UserAuthorizationService(
         IReadOnlyUnitOfWork readOnlyUnitOfWork,
         IUnitOfWork unitOfWork,
-        IPasswordProvider passwordProvider,
-        ILogger<UserAuthorizationService> logger
+        IPasswordCryptoService passwordCryptoService
         )
     {
       _readOnlyUnitOfWork = readOnlyUnitOfWork;
-      _passwordProvider = passwordProvider;
+      _passwordCryptoService = passwordCryptoService;
       _unitOfWork = unitOfWork;
-      _logger = logger;
     }
 
     public async Task<BellwetherUser> FindByEmailAsync(StringValues userEmail)
@@ -73,7 +71,7 @@ namespace Bellwether.WebApi.Authorization
       var result = false;
       if (password.Count >= 1)
       {
-        result = await _passwordProvider.IsCorrectAsync(password[0], user.Password, user.Salt);
+        result = await _passwordCryptoService.IsCorrectAsync(password[0], user.Password, user.Salt);
       }
 
       if (result)

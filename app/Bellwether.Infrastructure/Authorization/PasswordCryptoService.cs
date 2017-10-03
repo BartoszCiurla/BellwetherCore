@@ -2,11 +2,11 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Bellwether.Application.Users;
+using Bellwether.Domain.Users;
 
-namespace Bellwether.Infrastructure.Password
+namespace Bellwether.Infrastructure.Authorization
 {
-  public class PasswordProvider : IPasswordProvider
+  public class PasswordCryptoService : IPasswordCryptoService
   {
     public async Task<bool> IsCorrectAsync(string password, string passwordHash, string salt)
     {

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
+    <PackageReference Include="FluentAssertions" Version="5.0.0-beta0002" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta4-build3742" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <ProjectReference Include="..\Bellwether.Application\Bellwether.Application.csproj" />
+    <ProjectReference Include="..\Bellwether.Application.Api\Bellwether.Application.Api.csproj" />
+    <ProjectReference Include="..\Bellwether.Domain\Bellwether.Domain.csproj" />
+    <ProjectReference Include="..\Bellwether.Infrastructure\Bellwether.Infrastructure.csproj" />
+    <ProjectReference Include="..\Bellwether.Presentation\Bellwether.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>

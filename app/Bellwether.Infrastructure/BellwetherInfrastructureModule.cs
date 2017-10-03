@@ -5,6 +5,7 @@ using Serilog.AspNetCore;
 using Bellwether.Infrastructure.Ef;
 using Serilog;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace Bellwether.Infrastructure
 {
@@ -37,6 +38,9 @@ namespace Bellwether.Infrastructure
     {
       builder.Register(ctx =>
              {
+               var configuration = ctx.Resolve<IConfiguration>();
+               var connectionString = configuration.GetConnectionString("BellwetherDatabase");
+
                var options = new DbContextOptionsBuilder<BellwetherContext>()
                 .UseInMemoryDatabase(databaseName: "JustTest")
                 .Options;

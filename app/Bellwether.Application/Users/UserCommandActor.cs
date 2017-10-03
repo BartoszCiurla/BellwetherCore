@@ -6,18 +6,19 @@ using Core.Application.Actors;
 using Bellwether.Application.Api.Common;
 using Bellwether.Application.Api.Users;
 using Bellwether.Domain.Users.Entities;
+using Bellwether.Domain.Users;
 
 namespace Bellwether.Application.Users
 {
   [AutostartActor(DispatcherActorsNames.UserCommandActor)]
   public class UserCommandActor : BaseActor
   {
-    private readonly IPasswordProvider _passwordProvider;
+    private readonly IPasswordCryptoService _passwordCryptoService;
 
     public UserCommandActor(IActorBootstraper actorBootstraper,
-                            IPasswordProvider passwordProvider) : base(actorBootstraper)
+                            IPasswordCryptoService passwordCryptoService) : base(actorBootstraper)
     {
-      _passwordProvider = passwordProvider;
+      _passwordCryptoService = passwordCryptoService;
 
       ReceiveAsync<RegisterUserCommand>(Handle);
     }
@@ -28,8 +29,8 @@ namespace Bellwether.Application.Users
       {
         var userRepository = uow.GetRepository<BellwetherUser>();
 
-        var salt = _passwordProvider.GenerateSalt();
-        var passwordHash = _passwordProvider.HashPassword(command.Password, salt);
+        var salt = _passwordCryptoService.GenerateSalt();
+        var passwordHash = _passwordCryptoService.HashPassword(command.Password, salt);
 
         var user = BellwetherUser.Create(Guid.NewGuid(), command.Name, command.Surname, command.Email, passwordHash, salt, null);
 
