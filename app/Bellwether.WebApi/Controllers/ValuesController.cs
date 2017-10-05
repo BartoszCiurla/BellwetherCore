@@ -9,7 +9,7 @@ using Bellwether.Application.Api;
 
 namespace Bellwether.WebApi.Controllers
 {
-  [Authorize]
+  [Authorize(Roles = "Admin")]
   [Route("api/[controller]")]
   public class ValuesController : BaseController
   {
