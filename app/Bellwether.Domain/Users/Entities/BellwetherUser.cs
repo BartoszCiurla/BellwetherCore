@@ -15,7 +15,7 @@ namespace Bellwether.Domain.Users.Entities
     public DateTime Created { get; private set; }
     public DateTime LastLoginDate { get; private set; }
     public string Salt { get; private set; }
-    public virtual ICollection<UserRole> UserRoles { get; private set; }
+    public UserType UserType { get; set; }
 
     protected BellwetherUser() : base(Guid.Empty)
     {
@@ -27,15 +27,14 @@ namespace Bellwether.Domain.Users.Entities
                     string email,
                     string password,
                     string salt,
-                    ICollection<UserRole> userRoles) : base(id)
+                    UserType userType) : base(id)
     {
       Name = name;
       Surname = surname;
       Email = email;
       Password = password;
-      UserRoles = userRoles;
       Salt = salt;
-      UserRoles = userRoles ?? new List<UserRole>();
+      UserType = userType;
     }
     #region Factory methods
     public static BellwetherUser Create(Guid id,
@@ -44,9 +43,9 @@ namespace Bellwether.Domain.Users.Entities
                     string email,
                     string password,
                     string salt,
-                    ICollection<UserRole> userRoles)
+                    UserType userType)
     {
-      return new BellwetherUser(id, name, surname, email, password, salt, userRoles);
+      return new BellwetherUser(id, name, surname, email, password, salt, userType);
     }
 
     public void UpdateLastLoginDate() => LastLoginDate = DateTime.Now;

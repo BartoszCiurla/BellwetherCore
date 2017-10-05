@@ -18,7 +18,6 @@ namespace Bellwether.WebApi.Authorization
   public interface IUserAuthorizationService
   {
     Task<BellwetherUser> FindByEmailAsync(StringValues userEmail);
-    Task<IEnumerable<string>> GetRolesAsync(BellwetherUser user);
     Task<bool> CheckPasswordAsync(BellwetherUser user, StringValues password);
   }
 
@@ -48,24 +47,6 @@ namespace Bellwether.WebApi.Authorization
       }
       return result;
     }
-
-    public async Task<IEnumerable<string>> GetRolesAsync(BellwetherUser user)
-    {
-      var userRepository = _readOnlyUnitOfWork.GetRepository<BellwetherUser>();
-      var roleRepository = _readOnlyUnitOfWork.GetRepository<Role>();
-      var ueserRecord = await userRepository.Query().FirstOrDefaultAsync(x => x.Id == user.Id);
-      var roleIds = ueserRecord.UserRoles.Select(x => x.Role.Id).ToArray();
-
-      var roles = await roleRepository.Query().Where(x => roleIds.Any(y => y == x.Id)).ToArrayAsync();
-
-      var types = new List<string>();
-      foreach (var item in roles)
-      {
-        types.Add(item.Type);
-      }
-      return types;
-    }
-
     public async Task<bool> CheckPasswordAsync(BellwetherUser user, StringValues password)
     {
       var result = false;

@@ -32,7 +32,7 @@ namespace Bellwether.Application.Users
         var salt = _passwordCryptoService.GenerateSalt();
         var passwordHash = _passwordCryptoService.HashPassword(command.Password, salt);
 
-        var user = BellwetherUser.Create(Guid.NewGuid(), command.Name, command.Surname, command.Email, passwordHash, salt, null);
+        var user = BellwetherUser.Create(Guid.NewGuid(), command.Name, command.Surname, command.Email, passwordHash, salt, UserType.Client);
 
         userRepository.Add(user);
 

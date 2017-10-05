@@ -8,12 +8,18 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Bellwether.WebApi.Authorization;
+using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.Extensions.Logging;
-using Core.Akka.ActorAutostart;
 using Akka.DI.AutoFac;
+
+using Core.Akka.ActorAutostart;
 using Core.Akka.ActorSystem;
+using Bellwether.WebApi.Authorization;
+using Bellwether.Infrastructure.Ef;
+using Bellwether.Infrastructure.Authorization;
+using Bellwether.Domain.Users;
+using Bellwether.Infrastructure.Ef.Extensions;
 
 namespace Bellwether.WebApi
 {
@@ -81,8 +87,9 @@ namespace Bellwether.WebApi
 
     public void Configure(IApplicationBuilder app,
                           IHostingEnvironment env,
-                          ILoggerFactory loggerFactory,
-                          IAutostartActorInitializer autostartActorInitializer)
+                          IAutostartActorInitializer autostartActorInitializer,
+                          DbContext dbContext,
+                          IPasswordCryptoService passwordCryptoService)
     {
       app.UseCors(x => x
          .AllowAnyOrigin()
@@ -99,6 +106,8 @@ namespace Bellwether.WebApi
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bellwether api v1");
       });
+
+      (dbContext as BellwetherContext).EnsureSeedData(passwordCryptoService);
 
       autostartActorInitializer.FindAndStartActors();
     }

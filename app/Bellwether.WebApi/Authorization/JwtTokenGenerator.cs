@@ -80,18 +80,15 @@ namespace Bellwether.WebApi.Authorization
         return null;
       }
       var userValidatedPassword = await _userAuthorizationService.CheckPasswordAsync(user, password);
-      //var userValidatedEmail = await _userAuthorizationService.IsEmailConfirmedAsync(user);
+
       if (userValidatedPassword)
       {
         var claims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, userEmail),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Role, user.UserType.ToString())
                 };
-        //todo !!!!
-        //var roles = await _userAuthorizationService.GetRolesAsync(user);
-
-        //claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return new ClaimsIdentity(new GenericIdentity(userEmail, "Token"), claims);
       }
