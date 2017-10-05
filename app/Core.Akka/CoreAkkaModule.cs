@@ -8,7 +8,7 @@ namespace Core.Akka
   {
     private readonly Config AkkaConfig = ConfigurationFactory.ParseString(@"
                                                                         akka {
-                                                                            akka.suppress-json-serializer-warning = on
+                                                                            suppress-json-serializer-warning = on
                                                                         }
                                                                         ");
     protected override void Load(ContainerBuilder builder)

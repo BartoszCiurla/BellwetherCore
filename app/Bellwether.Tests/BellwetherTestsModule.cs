@@ -1,3 +1,4 @@
+using Akka.Configuration;
 using Autofac;
 using Bellwether.Application;
 using Bellwether.Infrastructure;
@@ -13,6 +14,11 @@ namespace Bellwether.Tests
 {
   public class BellwetherTestsModule : Module
   {
+    private readonly Config AkkaConfig = ConfigurationFactory.ParseString(@"
+                                                                        akka {
+                                                                            suppress-json-serializer-warning = on
+                                                                        }
+                                                                        ");
     protected override void Load(ContainerBuilder builder)
     {
       builder.RegisterModule<CoreInfrastructureModule>();
@@ -26,7 +32,7 @@ namespace Bellwether.Tests
       builder.RegisterModule<BellwetherApplicationModule>();
       builder.RegisterModule<BellwetherPresentationModule>();
 
-      builder.Register(ctx => new ActorSystemManager("ActorSystem")).AsImplementedInterfaces().SingleInstance();
+      builder.Register(ctx => new ActorSystemManager("ActorSystem", AkkaConfig)).AsImplementedInterfaces().SingleInstance();
     }
   }
 }
