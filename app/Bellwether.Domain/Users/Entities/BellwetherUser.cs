@@ -36,6 +36,8 @@ namespace Bellwether.Domain.Users.Entities
       Salt = salt;
       UserType = userType;
     }
+    public void UpdateLastLoginDate() => LastLoginDate = DateTime.Now;
+
     #region Factory methods
     public static BellwetherUser Create(Guid id,
                     string name,
@@ -47,8 +49,6 @@ namespace Bellwether.Domain.Users.Entities
     {
       return new BellwetherUser(id, name, surname, email, password, salt, userType);
     }
-
-    public void UpdateLastLoginDate() => LastLoginDate = DateTime.Now;
 
     #endregion
   }
