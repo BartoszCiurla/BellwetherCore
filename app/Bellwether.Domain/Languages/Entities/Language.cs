@@ -5,23 +5,31 @@ namespace Bellwether.Domain.Languages.Entities
 {
   public class Language : AggregateRoot
   {
+
+    public string Name { get; private set; }
+    public string ShortName { get; private set; }
+    public bool IsPublic { get; private set; }
     protected Language() : base(Guid.Empty)
     {
 
     }
 
-    public Language(Guid id,
+    protected Language(Guid id,
                     string name,
-                    string shortName,
-                    bool isPublic) : base(id)
+                    string shortName) : base(id)
     {
       Name = name;
       ShortName = shortName;
-      IsPublic = isPublic;
     }
 
-    public string Name { get; private set; }
-    public string ShortName { get; private set; }
-    public bool IsPublic { get; private set; }
+    public void ChangeAvailability(bool isPublic) => IsPublic = isPublic;
+
+    #region Factory methods
+    public static Language Create(Guid id, string name, string shortName)
+    {
+      return new Language(id, name, shortName);
+    }
+
+    #endregion
   }
 }
